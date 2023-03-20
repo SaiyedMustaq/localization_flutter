@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'appString.dart';
 import 'app_localization/localization_app.dart';
+import 'app_localization/translated.dart';
 
 void main() {
   runApp(const MyApp());
@@ -110,18 +111,13 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextField(
-              decoration: InputDecoration(
-                  hintText: AppLocalization.of(context)
-                      .getConvertedValue(AppString.entername)),
-            ),
+                decoration: InputDecoration(
+                    hintText: getTranslated(context, AppString.entername))),
             TextField(
-              decoration: InputDecoration(
-                  hintText: AppLocalization.of(context)
-                      .getConvertedValue(AppString.enterpassword)),
-            ),
+                decoration: InputDecoration(
+                    hintText: getTranslated(context, AppString.enterpassword))),
             const SizedBox(height: 20),
-            Text(
-                "${AppLocalization.of(context).getConvertedValue(AppString.forgotpassword)}"),
+            Text(getTranslated(context, AppString.forgotpassword)),
           ],
         ),
       ),
