@@ -1,0 +1,88 @@
+1. Create app.
+2. Add localization package in yml file.
+        flutter_localizations:
+            sdk: flutter
+        intl: any
+3.Create lang folder.
+4.Add your language support file.
+    hi.json
+    {
+    "hello":"नमस्ते"
+    }
+    en.json
+    {
+    "hello":"hello"
+    }
+5.Create sting file for project
+6.Create localization file ex: Applocalization create local variable.
+7.Now create constructor for Applocalization.
+8.Then create static method
+    static AppLocalization of(BuildContext context) {
+    return Localizations.of<AppLocalization>(context, AppLocalization)!;
+  }
+9.Create late Map<String, String> _localizationValue.
+10.Now create load method
+    Future load() async {
+    String jsonStringValue =
+        await rootBundle.loadString("lib/lang/${local.languageCode}.json");
+    Map<String, dynamic> mapResponse = jsonDecode(jsonStringValue);
+    _localizationValue =
+        mapResponse.map((key, value) => MapEntry(key, value.toString()));
+  }
+11.Next create convertLocalization method
+        String? getConvertedValue(String key) {
+    return _localizationValue[key];
+  }
+
+12.Create AppLocalizationsDelegate file and extend the LocalizationsDelegate<AppLocalization> file.
+13.Implement abstract method in AppLocalizationsDelegate.
+    1.isSuppoert method check
+         return ['en', 'hi', 'ar'].contains(locale.languageCode);
+    2.load method return localization
+            AppLocalization appLocalization = AppLocalization(locale);
+            await appLocalization.load();
+            return appLocalization;
+    3.  bool shouldReload(AppLocalizationsDelegate old) => false;
+
+14. Create locale variable in MainAppState in initialize as default Locale()
+         Locale _locale = const Locale('en', 'US');
+        void setLocale(Locale locale) {
+                setState(() {
+                        _locale = locale;
+                });
+        }
+15.Define locale in material app parameter
+16.Define LocalizationsDelegate
+    localizationsDelegates: const [
+        AppLocalization.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+17.Define supportedLocales
+    supportedLocales: const [
+        Locale('en', "US"), // English
+        Locale('ar', "SA"), // Saudi
+        Locale('hi', "IN"), // Hindi
+      ],
+18.Define property in Material app
+    localeResolutionCallback: (deviceLocale, supportedLocales) {
+        for (var locale in supportedLocales) {
+          if (locale.languageCode == deviceLocale?.languageCode &&
+              locale.countryCode == deviceLocale?.countryCode) {
+            return deviceLocale;
+          }
+        }
+        return supportedLocales.first;
+      },
+19.In main app create setLocal(BuildContext context,Locale locale)
+     static void setLocal(BuildContext context, Locale locale) {
+         _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+        state?.setLocale(locale);
+    }
+20. When ever you went to change language just hit the below
+    MyApp.setLocal(context, const Locale("en", "US"));
+
+21."${AppLocalization.of(context).getConvertedValue(AppString.hello)}".
+
+
