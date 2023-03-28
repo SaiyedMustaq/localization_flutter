@@ -40,9 +40,6 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalization> {
 
   @override
   Future<AppLocalization> load(Locale locale) async {
-    // Returning a SynchronousFuture here because an async "load" operation
-    // isn't needed to produce an instance of DemoLocalizations.
-    //return SynchronousFuture<AppLocalization>(AppLocalization(locale));
     AppLocalization appLocalization = AppLocalization(locale);
     await appLocalization.load();
     return appLocalization;
